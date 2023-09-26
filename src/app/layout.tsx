@@ -1,8 +1,10 @@
+import { StepFormContextProvider } from '@/context/StepFormContext'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
+import { SizingContextProvider } from '@/context/IrradianceContext'
 
-const roboto = Roboto({ weight: ['500', '700'], subsets: ['latin']})
+const roboto = Roboto({ weight: ['500', '700'], subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Dimensiona AI',
@@ -16,7 +18,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body className={roboto.className}>
+        <SizingContextProvider>
+          <StepFormContextProvider>
+            {children}
+          </StepFormContextProvider>
+        </SizingContextProvider>
+      </body>
     </html>
   )
 }

@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useId } from "react";
+import { twMerge } from 'tailwind-merge'
 
 interface InputProps extends React.HtmlHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -21,7 +22,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         id={id}
         type="text"
-        className={`placeholder:text-gray-200 border border-gray-300 rounded-lg p-2 w-full text-gray-500 ${className}`}
+        className={twMerge('placeholder:text-gray-200 border border-gray-300 rounded-lg p-2 w-full text-gray-500', className)}
         {...props}
       />
     </div>

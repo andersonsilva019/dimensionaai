@@ -1,5 +1,4 @@
-import { FaCheck } from 'react-icons/fa'
-
+import { Progress } from './Progress'
 
 const stepsContent = [
   {
@@ -29,10 +28,10 @@ export function FormProgress() {
       <ul className='flex flex-col'>
         {stepsContent.map(({ title, description }, index) => (
           <li key={title} className="flex items-start gap-4 max-h-20 mb-[47px]">
-            <span className='relative w-fit h-fit p-1 rounded-full bg-transparent border-2 border-gray-300'>
-              <FaCheck className="text-gray-300" />
-              {index !== stepsContent.length - 1 && <div className='absolute top-6 left-[10px] w-[2px] h-[100px] bg-gray-300'/>}
-            </span>
+            <Progress
+              index={index}
+              total={stepsContent.length}
+            />
             <div>
               <h3 className="text-black-700 text-lg font-bold">{title}</h3>
               <p className="text-gray-300 font-normal">{description}</p>

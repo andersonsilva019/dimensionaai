@@ -3,15 +3,46 @@
 import { useState, Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { AiOutlineClose } from 'react-icons/ai'
-import { Input } from './Input'
-import { Button } from './Button'
+import { Input } from '../Input'
+import { Button } from '../Button'
+import { IDevices } from './StepThree'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 interface ModalAddDeviceProps {
   isOpen: boolean
   closeModal: () => void
+  handleAddDevice: (device: IDevices) => void
+  totalOfDevices: number
 }
 
-export function ModalAddDevice({ isOpen, closeModal }: ModalAddDeviceProps) {
+const addDeviceSchema = z.object({
+  name: z.string().min(3),
+  power: z.number(),
+  hours: z.number(),
+  quantity: z.number(),
+})
+
+export function ModalAddDevice({
+  isOpen,
+  closeModal,
+  handleAddDevice,
+  totalOfDevices
+}: ModalAddDeviceProps) {
+
+  const { register, handleSubmit, reset } = useForm<z.infer<typeof addDeviceSchema>>()
+
+  function handleAddDeviceSubmit(values: z.infer<typeof addDeviceSchema>) {
+    handleAddDevice({
+      id: totalOfDevices + 1,
+      device: values.name,
+      power: values.power,
+      hours: values.hours,
+      quantity: values.quantity
+    })
+    reset()
+    closeModal()
+  }
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -46,16 +77,16 @@ export function ModalAddDevice({ isOpen, closeModal }: ModalAddDeviceProps) {
                   </button>
                 </Dialog.Title>
                 <div className="mt-2 flex flex-col gap-4">
-                  <Input label='Dispositivo' />
-                  <Input label='Potência (kW)' />
-                  <Input label='Horas em uso' />
-                  <Input label='Quantidade' />
+                  <Input label='Dispositivo' {...register('name')} />
+                  <Input label='Potência (kW)' {...register('power')} />
+                  <Input label='Horas em uso' {...register('hours')} />
+                  <Input label='Quantidade' {...register('quantity')} />
                 </div>
-
                 <div className="mt-6">
-                  <Button>Avançar</Button>
+                  <Button onClick={handleSubmit(handleAddDeviceSubmit)}>Adicionar</Button>
                   <button className="text-blue-300 py-2 px-4 w-full mt-2 rounded-lg border border-blue-300">Cancelar</button>
                 </div>
+
               </Dialog.Panel>
             </Transition.Child>
           </div>
